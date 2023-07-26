@@ -2,17 +2,19 @@ import argparse
 import os
 import re
 import xml.etree.ElementTree as ET
+from .utils import get_svgs
+
 
 # get the arguments
 parser = argparse.ArgumentParser(description='Normalize paths in SVG files.')
-parser.add_argument('input', metavar='input', type=str, nargs='+',
-                    help='input file or folder')
+parser.add_argument('input_dir', metavar='input_dir', type=str, nargs='+',
+                    help='input_dir file or folder')
 
 args = parser.parse_args()
-input = args.input[0]
+input_dir = args.input_dir[0]
 
-# get the absolute path of the input
-input = os.path.abspath(input)
+# get the absolute path of the input_dir
+input_dir = os.path.abspath(input_dir)
 
 
 def normalize_svg_path(x: float, y: float, path: str) -> str:
@@ -33,24 +35,10 @@ def normalize_svg_path(x: float, y: float, path: str) -> str:
     return result.strip()
 
 
-# get the svgs from path
-def get_svgs(path: str) -> list:
-    svgs = []
-    if os.path.isdir(path):
-        for root, dirs, files in os.walk(path):
-            for file in files:
-                if file.endswith(".svg"):
-                    svgs.append(os.path.join(root, file))
-    elif os.path.isfile(path):
-        if path.endswith(".svg"):
-            svgs.append(path)
-    return svgs
-
-
 svg_objs = []
 
 # normalize the paths in the svg
-for path in get_svgs(input):
+for path in get_svgs(input_dir):
     with open(path) as svg:
         tree = ET.parse(svg)
         root = tree.getroot()

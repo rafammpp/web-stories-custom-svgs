@@ -1,2 +1,4 @@
 .vscode
 example-svgs
+*.js
+__pycache__
