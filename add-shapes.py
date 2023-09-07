@@ -2,7 +2,7 @@ import argparse
 import os
 import re
 import xml.etree.ElementTree as ET
-from .utils import get_svgs
+from utils import get_svgs
 
 
 # get the arguments
